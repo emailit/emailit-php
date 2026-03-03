@@ -28,11 +28,14 @@ echo "Releasing $TAG ..."
 sed -i '' "s/public const VERSION = '.*'/public const VERSION = '$NEW_VERSION'/" src/Emailit.php
 sed -i '' "s/private const SDK_VERSION = '.*'/private const SDK_VERSION = '$NEW_VERSION'/" src/BaseEmailitClient.php
 
+# Update version in test assertion
+sed -i '' "s/expect(Emailit::VERSION)->toBe('.*')/expect(Emailit::VERSION)->toBe('$NEW_VERSION')/" tests/Unit/ClientTest.php
+
 # Update CURRENT_VERSION in this script for next time
 sed -i '' "s/^CURRENT_VERSION=\".*\"/CURRENT_VERSION=\"$NEW_VERSION\"/" release.sh
 
 # Stage, commit, tag, push
-git add src/Emailit.php src/BaseEmailitClient.php release.sh
+git add src/Emailit.php src/BaseEmailitClient.php tests/Unit/ClientTest.php release.sh
 git commit -m "release: $TAG"
 git tag -a "$TAG" -m "Release $TAG"
 git push origin HEAD

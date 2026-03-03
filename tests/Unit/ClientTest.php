@@ -65,7 +65,7 @@ test('Emailit::client() returns EmailitClient', function () {
 });
 
 test('Emailit::VERSION is defined', function () {
-    expect(Emailit::VERSION)->toBe('1.0.0');
+    expect(Emailit::VERSION)->toBe('2.0.1');
 });
 
 test('unknown property triggers notice and returns null', function () {
