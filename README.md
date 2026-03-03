@@ -1,6 +1,6 @@
 # Emailit PHP
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/emailitcom/emailit-php/tests.yml?branch=main&label=tests)](https://github.com/emailitcom/emailit-php/actions)
+[![Tests](https://img.shields.io/github/actions/workflow/status/emailit/emailit-php/tests.yml?branch=main?label=tests&style=for-the-badge&labelColor=111827)](https://github.com/emailit/emailit-php/actions)
 [![Packagist Version](https://img.shields.io/packagist/v/emailit/emailit-php)](https://packagist.org/packages/emailit/emailit-php)
 [![License](https://img.shields.io/packagist/l/emailit/emailit-php)](LICENSE)
 
