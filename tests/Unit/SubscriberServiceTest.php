@@ -20,7 +20,7 @@ test('create() adds a subscriber to an audience', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(201, $body)]);
 
-    $subscriber = $client->subscribers->create('aud_456', [
+    $subscriber = $client->subscribers()->create('aud_456', [
         'email' => 'user@example.com',
         'first_name' => 'John',
         'last_name' => 'Doe',
@@ -51,7 +51,7 @@ test('get() returns a Subscriber resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $subscriber = $client->subscribers->get('aud_456', 'sub_123');
+    $subscriber = $client->subscribers()->get('aud_456', 'sub_123');
 
     expect($subscriber)->toBeInstanceOf(Subscriber::class)
         ->and($subscriber->id)->toBe('sub_123');
@@ -75,7 +75,7 @@ test('update() returns a Subscriber resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $subscriber = $client->subscribers->update('aud_456', 'sub_123', ['first_name' => 'Jane']);
+    $subscriber = $client->subscribers()->update('aud_456', 'sub_123', ['first_name' => 'Jane']);
 
     expect($subscriber)->toBeInstanceOf(Subscriber::class)
         ->and($subscriber->first_name)->toBe('Jane');
@@ -101,7 +101,7 @@ test('list() returns a Collection of subscribers', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->subscribers->list('aud_456');
+    $collection = $client->subscribers()->list('aud_456');
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -126,7 +126,7 @@ test('delete() returns a Subscriber resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $subscriber = $client->subscribers->delete('aud_456', 'sub_123');
+    $subscriber = $client->subscribers()->delete('aud_456', 'sub_123');
 
     expect($subscriber)->toBeInstanceOf(Subscriber::class)
         ->and($subscriber->deleted)->toBeTrue();

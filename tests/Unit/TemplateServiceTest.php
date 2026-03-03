@@ -20,7 +20,7 @@ test('create() returns a template object', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(201, $body)]);
 
-    $result = $client->templates->create([
+    $result = $client->templates()->create([
         'name' => 'Welcome',
         'subject' => 'Welcome!',
         'html' => '<h1>Hi</h1>',
@@ -50,7 +50,7 @@ test('get() returns a template object', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $result = $client->templates->get('tem_123');
+    $result = $client->templates()->get('tem_123');
 
     expect($result)->toBeInstanceOf(EmailitObject::class);
 });
@@ -70,7 +70,7 @@ test('update() returns a template object', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $result = $client->templates->update('tem_123', ['name' => 'Updated']);
+    $result = $client->templates()->update('tem_123', ['name' => 'Updated']);
 
     expect($result)->toBeInstanceOf(EmailitObject::class)
         ->and($result->message)->toBe('Template updated.');
@@ -96,7 +96,7 @@ test('list() returns a Collection of templates', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->templates->list();
+    $collection = $client->templates()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2);
@@ -114,7 +114,7 @@ test('delete() returns a response object', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $result = $client->templates->delete('tem_123');
+    $result = $client->templates()->delete('tem_123');
 
     expect($result)->toBeInstanceOf(EmailitObject::class)
         ->and($result->message)->toBe('Template deleted.');
@@ -138,7 +138,7 @@ test('publish() returns a template object', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $result = $client->templates->publish('tem_123');
+    $result = $client->templates()->publish('tem_123');
 
     expect($result)->toBeInstanceOf(EmailitObject::class)
         ->and($result->message)->toBe('Template published.');

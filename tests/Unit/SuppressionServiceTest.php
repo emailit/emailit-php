@@ -18,7 +18,7 @@ test('create() returns a Suppression resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(201, $body)]);
 
-    $suppression = $client->suppressions->create([
+    $suppression = $client->suppressions()->create([
         'email' => 'spam@example.com',
         'type' => 'hard_bounce',
         'reason' => 'Manual suppression',
@@ -44,7 +44,7 @@ test('get() returns a Suppression resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $suppression = $client->suppressions->get('sup_123');
+    $suppression = $client->suppressions()->get('sup_123');
 
     expect($suppression)->toBeInstanceOf(Suppression::class)
         ->and($suppression->id)->toBe('sup_123');
@@ -64,7 +64,7 @@ test('update() returns a Suppression resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $suppression = $client->suppressions->update('sup_123', ['reason' => 'Updated reason']);
+    $suppression = $client->suppressions()->update('sup_123', ['reason' => 'Updated reason']);
 
     expect($suppression)->toBeInstanceOf(Suppression::class)
         ->and($suppression->reason)->toBe('Updated reason');
@@ -88,7 +88,7 @@ test('list() returns a Collection of suppressions', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->suppressions->list();
+    $collection = $client->suppressions()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -109,7 +109,7 @@ test('delete() returns a Suppression resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $suppression = $client->suppressions->delete('sup_123');
+    $suppression = $client->suppressions()->delete('sup_123');
 
     expect($suppression)->toBeInstanceOf(Suppression::class)
         ->and($suppression->deleted)->toBeTrue();

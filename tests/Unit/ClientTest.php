@@ -42,17 +42,17 @@ test('throws on empty api_key in array', function () {
     new EmailitClient(['api_key' => '']);
 })->throws(\InvalidArgumentException::class, 'api_key is required');
 
-test('emails property returns EmailService', function () {
+test('emails() returns EmailService', function () {
     $client = new EmailitClient('em_test_key');
 
-    expect($client->emails)->toBeInstanceOf(EmailService::class);
+    expect($client->emails())->toBeInstanceOf(EmailService::class);
 });
 
-test('emails service is cached', function () {
+test('emails() service is cached', function () {
     $client = new EmailitClient('em_test_key');
 
-    $first = $client->emails;
-    $second = $client->emails;
+    $first = $client->emails();
+    $second = $client->emails();
 
     expect($first)->toBe($second);
 });
@@ -66,14 +66,4 @@ test('Emailit::client() returns EmailitClient', function () {
 
 test('Emailit::VERSION is defined', function () {
     expect(Emailit::VERSION)->toBe('2.0.1');
-});
-
-test('unknown property triggers notice and returns null', function () {
-    $client = new EmailitClient('em_test_key');
-
-    set_error_handler(fn () => true);
-    $result = $client->nonexistent;
-    restore_error_handler();
-
-    expect($result)->toBeNull();
 });

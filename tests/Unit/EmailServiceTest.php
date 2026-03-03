@@ -27,7 +27,7 @@ test('send() returns an Email resource', function () {
         jsonResponse(201, $responseBody),
     ]);
 
-    $email = $client->emails->send([
+    $email = $client->emails()->send([
         'from' => 'hello@example.com',
         'to' => ['user@example.com'],
         'subject' => 'Hello World',
@@ -56,7 +56,7 @@ test('send() with template and variables', function () {
         jsonResponse(201, ['object' => 'email', 'id' => 'em_tpl1', 'status' => 'pending']),
     ]);
 
-    $email = $client->emails->send([
+    $email = $client->emails()->send([
         'from' => 'hello@example.com',
         'to' => 'user@example.com',
         'template' => 'welcome_email',
@@ -76,7 +76,7 @@ test('send() with attachments', function () {
         jsonResponse(201, ['object' => 'email', 'id' => 'em_att1', 'status' => 'pending']),
     ]);
 
-    $client->emails->send([
+    $client->emails()->send([
         'from' => 'invoices@example.com',
         'to' => 'customer@example.com',
         'subject' => 'Invoice',
@@ -96,7 +96,7 @@ test('send() with scheduled_at returns scheduled status', function () {
         jsonResponse(201, ['object' => 'email', 'id' => 'em_sch1', 'status' => 'scheduled']),
     ]);
 
-    $email = $client->emails->send([
+    $email = $client->emails()->send([
         'from' => 'reminders@example.com',
         'to' => 'user@example.com',
         'subject' => 'Reminder',
@@ -112,7 +112,7 @@ test('send() with tracking options', function () {
         jsonResponse(201, ['object' => 'email', 'id' => 'em_trk1', 'status' => 'pending']),
     ]);
 
-    $client->emails->send([
+    $client->emails()->send([
         'from' => 'hello@example.com',
         'to' => ['user@example.com'],
         'subject' => 'Tracked',
@@ -142,7 +142,7 @@ test('list() returns a Collection of Email resources', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $list = $client->emails->list(['page' => 1, 'limit' => 10]);
+    $list = $client->emails()->list(['page' => 1, 'limit' => 10]);
 
     expect($list)->toBeInstanceOf(Collection::class)
         ->and($list)->toHaveCount(2)
@@ -161,7 +161,7 @@ test('list() without params sends no query string', function () {
         jsonResponse(200, ['data' => [], 'next_page_url' => null, 'previous_page_url' => null]),
     ]);
 
-    $list = $client->emails->list();
+    $list = $client->emails()->list();
 
     expect($list)->toBeInstanceOf(Collection::class)
         ->and($list)->toHaveCount(0)
@@ -188,7 +188,7 @@ test('get() returns a typed Email resource', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $email = $client->emails->get('em_abc123');
+    $email = $client->emails()->get('em_abc123');
 
     expect($email)->toBeInstanceOf(Email::class)
         ->and($email->id)->toBe('em_abc123')
@@ -214,7 +214,7 @@ test('getRaw() returns Email with raw property', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $email = $client->emails->getRaw('em_abc123');
+    $email = $client->emails()->getRaw('em_abc123');
 
     expect($email)->toBeInstanceOf(Email::class)
         ->and($email->raw)->toContain('From: sender@example.com');
@@ -237,7 +237,7 @@ test('getAttachments() returns a Collection', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $attachments = $client->emails->getAttachments('em_abc123');
+    $attachments = $client->emails()->getAttachments('em_abc123');
 
     expect($attachments)->toBeInstanceOf(Collection::class)
         ->and($attachments)->toHaveCount(1)
@@ -259,7 +259,7 @@ test('getBody() returns EmailitObject with text and html', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $body = $client->emails->getBody('em_abc123');
+    $body = $client->emails()->getBody('em_abc123');
 
     expect($body)->toBeInstanceOf(EmailitObject::class)
         ->and($body->text)->toBe('Plain text content')
@@ -283,7 +283,7 @@ test('getMeta() returns an Email resource with headers', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $meta = $client->emails->getMeta('em_abc123');
+    $meta = $client->emails()->getMeta('em_abc123');
 
     expect($meta)->toBeInstanceOf(Email::class)
         ->and($meta->headers['From'])->toBe('sender@example.com')
@@ -308,7 +308,7 @@ test('update() returns updated Email resource', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $email = $client->emails->update('em_abc123', ['scheduled_at' => '2026-01-10T15:00:00Z']);
+    $email = $client->emails()->update('em_abc123', ['scheduled_at' => '2026-01-10T15:00:00Z']);
 
     expect($email)->toBeInstanceOf(Email::class)
         ->and($email->status)->toBe('scheduled')
@@ -335,7 +335,7 @@ test('cancel() returns canceled Email resource', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $email = $client->emails->cancel('em_abc123');
+    $email = $client->emails()->cancel('em_abc123');
 
     expect($email)->toBeInstanceOf(Email::class)
         ->and($email->status)->toBe('canceled');
@@ -361,7 +361,7 @@ test('retry() returns new Email resource with original_id', function () {
         jsonResponse(200, $responseBody),
     ]);
 
-    $email = $client->emails->retry('em_abc123');
+    $email = $client->emails()->retry('em_abc123');
 
     expect($email)->toBeInstanceOf(Email::class)
         ->and($email->original_id)->toBe('em_abc123')
@@ -381,7 +381,7 @@ test('Email resource supports ArrayAccess', function () {
         jsonResponse(200, ['object' => 'email', 'id' => 'em_abc', 'status' => 'sent']),
     ]);
 
-    $email = $client->emails->get('em_abc');
+    $email = $client->emails()->get('em_abc');
 
     expect($email['id'])->toBe('em_abc')
         ->and($email['status'])->toBe('sent')
@@ -394,7 +394,7 @@ test('Email resource supports toArray()', function () {
         jsonResponse(200, ['object' => 'email', 'id' => 'em_abc', 'status' => 'sent']),
     ]);
 
-    $email = $client->emails->get('em_abc');
+    $email = $client->emails()->get('em_abc');
 
     expect($email->toArray())->toBe(['object' => 'email', 'id' => 'em_abc', 'status' => 'sent']);
 });
@@ -404,7 +404,7 @@ test('Email resource is JSON serializable', function () {
         jsonResponse(200, ['object' => 'email', 'id' => 'em_abc', 'status' => 'sent']),
     ]);
 
-    $email = $client->emails->get('em_abc');
+    $email = $client->emails()->get('em_abc');
 
     expect(json_encode($email))->toBe('{"object":"email","id":"em_abc","status":"sent"}');
 });
@@ -414,7 +414,7 @@ test('getLastResponse() returns the underlying ApiResponse', function () {
         jsonResponse(200, ['object' => 'email', 'id' => 'em_abc']),
     ]);
 
-    $email = $client->emails->get('em_abc');
+    $email = $client->emails()->get('em_abc');
 
     expect($email->getLastResponse())->toBeInstanceOf(\Emailit\ApiResponse::class)
         ->and($email->getLastResponse()->statusCode)->toBe(200);
@@ -432,7 +432,7 @@ test('Collection is iterable', function () {
         ]),
     ]);
 
-    $list = $client->emails->list();
+    $list = $client->emails()->list();
     $ids = [];
 
     foreach ($list as $email) {
@@ -451,7 +451,7 @@ test('email id is url-encoded in path', function () {
         jsonResponse(200, ['object' => 'email', 'id' => 'em_with spaces']),
     ]);
 
-    $client->emails->get('em_with spaces');
+    $client->emails()->get('em_with spaces');
 
     expect((string) $handler->getLastRequest()->getUri())->toBe('/v2/emails/em_with+spaces');
 });
@@ -465,7 +465,7 @@ test('401 throws AuthenticationException', function () {
         jsonResponse(401, ['error' => 'Unauthorized', 'message' => 'Invalid API key']),
     ]);
 
-    $client->emails->list();
+    $client->emails()->list();
 })->throws(AuthenticationException::class, 'Unauthorized: Invalid API key');
 
 test('400 throws InvalidRequestException', function () {
@@ -473,7 +473,7 @@ test('400 throws InvalidRequestException', function () {
         jsonResponse(400, ['error' => 'Validation failed', 'message' => 'Missing required field: from']),
     ]);
 
-    $client->emails->send(['to' => ['user@example.com']]);
+    $client->emails()->send(['to' => ['user@example.com']]);
 })->throws(InvalidRequestException::class, 'Validation failed: Missing required field: from');
 
 test('404 throws InvalidRequestException', function () {
@@ -481,7 +481,7 @@ test('404 throws InvalidRequestException', function () {
         jsonResponse(404, ['error' => 'Email not found', 'message' => "Email with ID 'em_fake' not found"]),
     ]);
 
-    $client->emails->get('em_fake');
+    $client->emails()->get('em_fake');
 })->throws(InvalidRequestException::class, 'Email not found');
 
 test('422 throws UnprocessableEntityException', function () {
@@ -489,7 +489,7 @@ test('422 throws UnprocessableEntityException', function () {
         jsonResponse(422, ['error' => 'Cannot cancel email', 'message' => "Current status: 'sent'"]),
     ]);
 
-    $client->emails->cancel('em_sent');
+    $client->emails()->cancel('em_sent');
 })->throws(UnprocessableEntityException::class, 'Cannot cancel email');
 
 test('429 throws RateLimitException', function () {
@@ -497,7 +497,7 @@ test('429 throws RateLimitException', function () {
         jsonResponse(429, ['error' => 'Rate limit exceeded', 'message' => 'Too many requests']),
     ]);
 
-    $client->emails->send(['from' => 'a@b.com', 'to' => 'c@d.com', 'subject' => 'Hi', 'html' => 'Hi']);
+    $client->emails()->send(['from' => 'a@b.com', 'to' => 'c@d.com', 'subject' => 'Hi', 'html' => 'Hi']);
 })->throws(RateLimitException::class, 'Rate limit exceeded: Too many requests');
 
 test('error exception carries full response data', function () {
@@ -508,7 +508,7 @@ test('error exception carries full response data', function () {
     ]);
 
     try {
-        $client->emails->get('em_nonexistent');
+        $client->emails()->get('em_nonexistent');
         $this->fail('Expected exception');
     } catch (InvalidRequestException $e) {
         expect($e->getHttpStatus())->toBe(404)
@@ -524,7 +524,7 @@ test('nested error format is extracted', function () {
     ]);
 
     try {
-        $client->emails->send(['from' => 'a@b.com', 'to' => 'invalid', 'subject' => 'Hi', 'html' => 'Hi']);
+        $client->emails()->send(['from' => 'a@b.com', 'to' => 'invalid', 'subject' => 'Hi', 'html' => 'Hi']);
         $this->fail('Expected exception');
     } catch (InvalidRequestException $e) {
         expect($e->getMessage())->toBe('The recipient email address is invalid');
@@ -537,7 +537,7 @@ test('non-json error body uses fallback message', function () {
     ]);
 
     try {
-        $client->emails->list();
+        $client->emails()->list();
         $this->fail('Expected exception');
     } catch (\Emailit\Exceptions\ApiErrorException $e) {
         expect($e->getMessage())->toBe('API request failed with status 502')
@@ -561,5 +561,5 @@ test('connection failure throws ApiConnectionException', function () {
         'http_client' => $guzzle,
     ]);
 
-    $client->emails->list();
+    $client->emails()->list();
 })->throws(ApiConnectionException::class, 'Could not connect to the Emailit API');

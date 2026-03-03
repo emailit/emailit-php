@@ -19,7 +19,7 @@ test('list() returns a Collection of events', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->events->list();
+    $collection = $client->events()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -38,7 +38,7 @@ test('list() passes filter params', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->events->list(['type' => 'email.bounced', 'limit' => 10]);
+    $collection = $client->events()->list(['type' => 'email.bounced', 'limit' => 10]);
 
     expect($collection)->toHaveCount(1);
 
@@ -63,7 +63,7 @@ test('get() returns an Event resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $event = $client->events->get('evt_123');
+    $event = $client->events()->get('evt_123');
 
     expect($event)->toBeInstanceOf(Event::class)
         ->and($event->id)->toBe('evt_123')

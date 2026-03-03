@@ -19,7 +19,7 @@ test('create() returns an ApiKey resource with key', function () {
 
     ['client' => $client] = mockClient([jsonResponse(201, $body)]);
 
-    $apiKey = $client->apiKeys->create(['name' => 'My Key', 'scope' => 'full']);
+    $apiKey = $client->apiKeys()->create(['name' => 'My Key', 'scope' => 'full']);
 
     expect($apiKey)->toBeInstanceOf(ApiKey::class)
         ->and($apiKey->id)->toBe('ak_123')
@@ -41,7 +41,7 @@ test('get() returns an ApiKey resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $apiKey = $client->apiKeys->get('ak_123');
+    $apiKey = $client->apiKeys()->get('ak_123');
 
     expect($apiKey)->toBeInstanceOf(ApiKey::class)
         ->and($apiKey->id)->toBe('ak_123');
@@ -63,7 +63,7 @@ test('list() returns a Collection of API keys', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->apiKeys->list();
+    $collection = $client->apiKeys()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -83,7 +83,7 @@ test('update() returns an ApiKey resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $apiKey = $client->apiKeys->update('ak_123', ['name' => 'Updated Key']);
+    $apiKey = $client->apiKeys()->update('ak_123', ['name' => 'Updated Key']);
 
     expect($apiKey)->toBeInstanceOf(ApiKey::class)
         ->and($apiKey->name)->toBe('Updated Key');
@@ -106,7 +106,7 @@ test('delete() returns an ApiKey resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $apiKey = $client->apiKeys->delete('ak_123');
+    $apiKey = $client->apiKeys()->delete('ak_123');
 
     expect($apiKey)->toBeInstanceOf(ApiKey::class)
         ->and($apiKey->deleted)->toBeTrue();
@@ -119,5 +119,5 @@ test('apiKeys service throws AuthenticationException on 401', function () {
         jsonResponse(401, ['error' => 'Unauthenticated']),
     ]);
 
-    $client->apiKeys->list();
+    $client->apiKeys()->list();
 })->throws(AuthenticationException::class);

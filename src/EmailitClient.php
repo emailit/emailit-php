@@ -16,20 +16,6 @@ use Emailit\Service\SuppressionService;
 use Emailit\Service\TemplateService;
 use Emailit\Service\WebhookService;
 
-/**
- * @property-read EmailService $emails
- * @property-read DomainService $domains
- * @property-read ApiKeyService $apiKeys
- * @property-read AudienceService $audiences
- * @property-read SubscriberService $subscribers
- * @property-read TemplateService $templates
- * @property-read SuppressionService $suppressions
- * @property-read EmailVerificationService $emailVerifications
- * @property-read EmailVerificationListService $emailVerificationLists
- * @property-read WebhookService $webhooks
- * @property-read ContactService $contacts
- * @property-read EventService $events
- */
 class EmailitClient extends BaseEmailitClient
 {
     private CoreServiceFactory $serviceFactory;
@@ -43,15 +29,75 @@ class EmailitClient extends BaseEmailitClient
         $this->serviceFactory = new CoreServiceFactory($this);
     }
 
-    public function __get(string $name): mixed
+    public function emails(): EmailService
+    {
+        return $this->resolveService('emails');
+    }
+
+    public function domains(): DomainService
+    {
+        return $this->resolveService('domains');
+    }
+
+    public function apiKeys(): ApiKeyService
+    {
+        return $this->resolveService('apiKeys');
+    }
+
+    public function audiences(): AudienceService
+    {
+        return $this->resolveService('audiences');
+    }
+
+    public function subscribers(): SubscriberService
+    {
+        return $this->resolveService('subscribers');
+    }
+
+    public function templates(): TemplateService
+    {
+        return $this->resolveService('templates');
+    }
+
+    public function suppressions(): SuppressionService
+    {
+        return $this->resolveService('suppressions');
+    }
+
+    public function emailVerifications(): EmailVerificationService
+    {
+        return $this->resolveService('emailVerifications');
+    }
+
+    public function emailVerificationLists(): EmailVerificationListService
+    {
+        return $this->resolveService('emailVerificationLists');
+    }
+
+    public function webhooks(): WebhookService
+    {
+        return $this->resolveService('webhooks');
+    }
+
+    public function contacts(): ContactService
+    {
+        return $this->resolveService('contacts');
+    }
+
+    public function events(): EventService
+    {
+        return $this->resolveService('events');
+    }
+
+    /**
+     * @template T
+     * @param string $name
+     * @return T
+     */
+    private function resolveService(string $name): mixed
     {
         if (!isset($this->serviceCache[$name])) {
-            $service = $this->serviceFactory->getService($name);
-            if ($service === null) {
-                trigger_error("Undefined property: " . static::class . "::\${$name}", E_USER_NOTICE);
-                return null;
-            }
-            $this->serviceCache[$name] = $service;
+            $this->serviceCache[$name] = $this->serviceFactory->getService($name);
         }
 
         return $this->serviceCache[$name];

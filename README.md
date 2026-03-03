@@ -24,7 +24,7 @@ require 'vendor/autoload.php';
 
 $emailit = Emailit::client('your_api_key');
 
-$email = $emailit->emails->send([
+$email = $emailit->emails()->send([
     'from'    => 'hello@yourdomain.com',
     'to'      => ['user@example.com'],
     'subject' => 'Hello from Emailit',
@@ -41,18 +41,18 @@ All service methods return typed resource objects (`Email`, `Domain`, `Contact`,
 
 | Service | Property | Description |
 |---------|----------|-------------|
-| Emails | `$emailit->emails` | Send, list, get, cancel, retry emails |
-| Domains | `$emailit->domains` | Create, verify, list, manage sending domains |
-| API Keys | `$emailit->apiKeys` | Create, list, manage API keys |
-| Audiences | `$emailit->audiences` | Create, list, manage audiences |
-| Subscribers | `$emailit->subscribers` | Add, list, manage subscribers in audiences |
-| Templates | `$emailit->templates` | Create, list, publish email templates |
-| Suppressions | `$emailit->suppressions` | Create, list, manage suppressed addresses |
-| Email Verifications | `$emailit->emailVerifications` | Verify email addresses |
-| Email Verification Lists | `$emailit->emailVerificationLists` | Create, list, get results, export |
-| Webhooks | `$emailit->webhooks` | Create, list, manage webhooks |
-| Contacts | `$emailit->contacts` | Create, list, manage contacts |
-| Events | `$emailit->events` | List and retrieve events |
+| Emails | `$emailit->emails()` | Send, list, get, cancel, retry emails |
+| Domains | `$emailit->domains()` | Create, verify, list, manage sending domains |
+| API Keys | `$emailit->apiKeys()` | Create, list, manage API keys |
+| Audiences | `$emailit->audiences()` | Create, list, manage audiences |
+| Subscribers | `$emailit->subscribers()` | Add, list, manage subscribers in audiences |
+| Templates | `$emailit->templates()` | Create, list, publish email templates |
+| Suppressions | `$emailit->suppressions()` | Create, list, manage suppressed addresses |
+| Email Verifications | `$emailit->emailVerifications()` | Verify email addresses |
+| Email Verification Lists | `$emailit->emailVerificationLists()` | Create, list, get results, export |
+| Webhooks | `$emailit->webhooks()` | Create, list, manage webhooks |
+| Contacts | `$emailit->contacts()` | Create, list, manage contacts |
+| Events | `$emailit->events()` | List and retrieve events |
 
 ## Usage
 
@@ -61,7 +61,7 @@ All service methods return typed resource objects (`Email`, `Domain`, `Contact`,
 #### Send an email
 
 ```php
-$email = $emailit->emails->send([
+$email = $emailit->emails()->send([
     'from'    => 'hello@yourdomain.com',
     'to'      => ['user@example.com'],
     'subject' => 'Hello from Emailit',
@@ -75,7 +75,7 @@ echo $email->status;
 #### Send with a template
 
 ```php
-$email = $emailit->emails->send([
+$email = $emailit->emails()->send([
     'from'      => 'hello@yourdomain.com',
     'to'        => 'user@example.com',
     'template'  => 'welcome_email',
@@ -89,7 +89,7 @@ $email = $emailit->emails->send([
 #### Send with attachments
 
 ```php
-$email = $emailit->emails->send([
+$email = $emailit->emails()->send([
     'from'        => 'invoices@yourdomain.com',
     'to'          => 'customer@example.com',
     'subject'     => 'Your Invoice #12345',
@@ -107,7 +107,7 @@ $email = $emailit->emails->send([
 #### Schedule an email
 
 ```php
-$email = $emailit->emails->send([
+$email = $emailit->emails()->send([
     'from'         => 'reminders@yourdomain.com',
     'to'           => 'user@example.com',
     'subject'      => 'Appointment Reminder',
@@ -122,7 +122,7 @@ echo $email->scheduled_at; // 2026-01-10T09:00:00Z
 #### List emails
 
 ```php
-$emails = $emailit->emails->list(['page' => 1, 'limit' => 10]);
+$emails = $emailit->emails()->list(['page' => 1, 'limit' => 10]);
 
 foreach ($emails as $email) {
     echo $email->id . ' — ' . $email->status . "\n";
@@ -136,8 +136,8 @@ if ($emails->hasMore()) {
 #### Cancel / Retry
 
 ```php
-$emailit->emails->cancel('em_abc123');
-$emailit->emails->retry('em_abc123');
+$emailit->emails()->cancel('em_abc123');
+$emailit->emails()->retry('em_abc123');
 ```
 
 ---
@@ -146,7 +146,7 @@ $emailit->emails->retry('em_abc123');
 
 ```php
 // Create a domain
-$domain = $emailit->domains->create([
+$domain = $emailit->domains()->create([
     'name' => 'example.com',
     'track_loads' => true,
     'track_clicks' => true,
@@ -154,19 +154,19 @@ $domain = $emailit->domains->create([
 echo $domain->id;
 
 // Verify DNS
-$domain = $emailit->domains->verify('sd_123');
+$domain = $emailit->domains()->verify('sd_123');
 
 // List all domains
-$domains = $emailit->domains->list();
+$domains = $emailit->domains()->list();
 
 // Get a domain
-$domain = $emailit->domains->get('sd_123');
+$domain = $emailit->domains()->get('sd_123');
 
 // Update a domain
-$domain = $emailit->domains->update('sd_123', ['track_clicks' => false]);
+$domain = $emailit->domains()->update('sd_123', ['track_clicks' => false]);
 
 // Delete a domain
-$emailit->domains->delete('sd_123');
+$emailit->domains()->delete('sd_123');
 ```
 
 ---
@@ -175,23 +175,23 @@ $emailit->domains->delete('sd_123');
 
 ```php
 // Create an API key
-$key = $emailit->apiKeys->create([
+$key = $emailit->apiKeys()->create([
     'name' => 'Production Key',
     'scope' => 'full',
 ]);
 echo $key->key; // only available on create
 
 // List all API keys
-$keys = $emailit->apiKeys->list();
+$keys = $emailit->apiKeys()->list();
 
 // Get an API key
-$key = $emailit->apiKeys->get('ak_123');
+$key = $emailit->apiKeys()->get('ak_123');
 
 // Update an API key
-$emailit->apiKeys->update('ak_123', ['name' => 'Renamed Key']);
+$emailit->apiKeys()->update('ak_123', ['name' => 'Renamed Key']);
 
 // Delete an API key
-$emailit->apiKeys->delete('ak_123');
+$emailit->apiKeys()->delete('ak_123');
 ```
 
 ---
@@ -200,21 +200,21 @@ $emailit->apiKeys->delete('ak_123');
 
 ```php
 // Create an audience
-$audience = $emailit->audiences->create(['name' => 'Newsletter']);
+$audience = $emailit->audiences()->create(['name' => 'Newsletter']);
 echo $audience->id;
 echo $audience->token;
 
 // List audiences
-$audiences = $emailit->audiences->list();
+$audiences = $emailit->audiences()->list();
 
 // Get an audience
-$audience = $emailit->audiences->get('aud_123');
+$audience = $emailit->audiences()->get('aud_123');
 
 // Update an audience
-$emailit->audiences->update('aud_123', ['name' => 'Updated Newsletter']);
+$emailit->audiences()->update('aud_123', ['name' => 'Updated Newsletter']);
 
 // Delete an audience
-$emailit->audiences->delete('aud_123');
+$emailit->audiences()->delete('aud_123');
 ```
 
 ---
@@ -225,25 +225,25 @@ Subscribers belong to an audience, so the audience ID is always the first argume
 
 ```php
 // Add a subscriber
-$subscriber = $emailit->subscribers->create('aud_123', [
+$subscriber = $emailit->subscribers()->create('aud_123', [
     'email' => 'user@example.com',
     'first_name' => 'John',
     'last_name' => 'Doe',
 ]);
 
 // List subscribers in an audience
-$subscribers = $emailit->subscribers->list('aud_123');
+$subscribers = $emailit->subscribers()->list('aud_123');
 
 // Get a subscriber
-$subscriber = $emailit->subscribers->get('aud_123', 'sub_456');
+$subscriber = $emailit->subscribers()->get('aud_123', 'sub_456');
 
 // Update a subscriber
-$emailit->subscribers->update('aud_123', 'sub_456', [
+$emailit->subscribers()->update('aud_123', 'sub_456', [
     'first_name' => 'Jane',
 ]);
 
 // Delete a subscriber
-$emailit->subscribers->delete('aud_123', 'sub_456');
+$emailit->subscribers()->delete('aud_123', 'sub_456');
 ```
 
 ---
@@ -252,26 +252,26 @@ $emailit->subscribers->delete('aud_123', 'sub_456');
 
 ```php
 // Create a template
-$result = $emailit->templates->create([
+$result = $emailit->templates()->create([
     'name' => 'Welcome',
     'subject' => 'Welcome!',
     'html' => '<h1>Hi {{name}}</h1>',
 ]);
 
 // List templates
-$templates = $emailit->templates->list();
+$templates = $emailit->templates()->list();
 
 // Get a template
-$template = $emailit->templates->get('tem_123');
+$template = $emailit->templates()->get('tem_123');
 
 // Update a template
-$emailit->templates->update('tem_123', ['subject' => 'New Subject']);
+$emailit->templates()->update('tem_123', ['subject' => 'New Subject']);
 
 // Publish a template
-$emailit->templates->publish('tem_123');
+$emailit->templates()->publish('tem_123');
 
 // Delete a template
-$emailit->templates->delete('tem_123');
+$emailit->templates()->delete('tem_123');
 ```
 
 ---
@@ -280,23 +280,23 @@ $emailit->templates->delete('tem_123');
 
 ```php
 // Create a suppression
-$suppression = $emailit->suppressions->create([
+$suppression = $emailit->suppressions()->create([
     'email' => 'spam@example.com',
     'type' => 'hard_bounce',
     'reason' => 'Manual suppression',
 ]);
 
 // List suppressions
-$suppressions = $emailit->suppressions->list();
+$suppressions = $emailit->suppressions()->list();
 
 // Get a suppression
-$suppression = $emailit->suppressions->get('sup_123');
+$suppression = $emailit->suppressions()->get('sup_123');
 
 // Update a suppression
-$emailit->suppressions->update('sup_123', ['reason' => 'Updated']);
+$emailit->suppressions()->update('sup_123', ['reason' => 'Updated']);
 
 // Delete a suppression
-$emailit->suppressions->delete('sup_123');
+$emailit->suppressions()->delete('sup_123');
 ```
 
 ---
@@ -304,7 +304,7 @@ $emailit->suppressions->delete('sup_123');
 ### Email Verifications
 
 ```php
-$result = $emailit->emailVerifications->verify([
+$result = $emailit->emailVerifications()->verify([
     'email' => 'test@example.com',
 ]);
 
@@ -319,7 +319,7 @@ echo $result->risk;   // low
 
 ```php
 // Create a verification list
-$list = $emailit->emailVerificationLists->create([
+$list = $emailit->emailVerificationLists()->create([
     'name' => 'Marketing List Q1',
     'emails' => [
         'user1@example.com',
@@ -331,21 +331,21 @@ echo $list->id;     // evl_abc123...
 echo $list->status; // pending
 
 // List all verification lists
-$lists = $emailit->emailVerificationLists->list();
+$lists = $emailit->emailVerificationLists()->list();
 
 // Get a verification list
-$list = $emailit->emailVerificationLists->get('evl_abc123');
+$list = $emailit->emailVerificationLists()->get('evl_abc123');
 echo $list->stats['successful_verifications'];
 
 // Get verification results
-$results = $emailit->emailVerificationLists->results('evl_abc123', ['page' => 1, 'limit' => 50]);
+$results = $emailit->emailVerificationLists()->results('evl_abc123', ['page' => 1, 'limit' => 50]);
 
 foreach ($results as $result) {
     echo $result->email . ' — ' . $result->result . "\n";
 }
 
 // Export results as XLSX
-$response = $emailit->emailVerificationLists->export('evl_abc123');
+$response = $emailit->emailVerificationLists()->export('evl_abc123');
 file_put_contents('results.xlsx', $response->body);
 ```
 
@@ -355,7 +355,7 @@ file_put_contents('results.xlsx', $response->body);
 
 ```php
 // Create a webhook
-$webhook = $emailit->webhooks->create([
+$webhook = $emailit->webhooks()->create([
     'name' => 'My Webhook',
     'url' => 'https://example.com/hook',
     'all_events' => true,
@@ -364,16 +364,16 @@ $webhook = $emailit->webhooks->create([
 echo $webhook->id;
 
 // List webhooks
-$webhooks = $emailit->webhooks->list();
+$webhooks = $emailit->webhooks()->list();
 
 // Get a webhook
-$webhook = $emailit->webhooks->get('wh_123');
+$webhook = $emailit->webhooks()->get('wh_123');
 
 // Update a webhook
-$emailit->webhooks->update('wh_123', ['enabled' => false]);
+$emailit->webhooks()->update('wh_123', ['enabled' => false]);
 
 // Delete a webhook
-$emailit->webhooks->delete('wh_123');
+$emailit->webhooks()->delete('wh_123');
 ```
 
 ---
@@ -382,7 +382,7 @@ $emailit->webhooks->delete('wh_123');
 
 ```php
 // Create a contact
-$contact = $emailit->contacts->create([
+$contact = $emailit->contacts()->create([
     'email' => 'user@example.com',
     'first_name' => 'John',
     'last_name' => 'Doe',
@@ -390,16 +390,16 @@ $contact = $emailit->contacts->create([
 echo $contact->id;
 
 // List contacts
-$contacts = $emailit->contacts->list();
+$contacts = $emailit->contacts()->list();
 
 // Get a contact
-$contact = $emailit->contacts->get('con_123');
+$contact = $emailit->contacts()->get('con_123');
 
 // Update a contact
-$emailit->contacts->update('con_123', ['first_name' => 'Jane']);
+$emailit->contacts()->update('con_123', ['first_name' => 'Jane']);
 
 // Delete a contact
-$emailit->contacts->delete('con_123');
+$emailit->contacts()->delete('con_123');
 ```
 
 ---
@@ -408,14 +408,14 @@ $emailit->contacts->delete('con_123');
 
 ```php
 // List events
-$events = $emailit->events->list(['type' => 'email.delivered']);
+$events = $emailit->events()->list(['type' => 'email.delivered']);
 
 foreach ($events as $event) {
     echo $event->type . "\n";
 }
 
 // Get an event
-$event = $emailit->events->get('evt_123');
+$event = $emailit->events()->get('evt_123');
 echo $event->type;
 echo $event->data['email_id'];
 ```
@@ -513,7 +513,7 @@ use Emailit\Exceptions\ApiConnectionException;
 use Emailit\Exceptions\ApiErrorException;
 
 try {
-    $emailit->emails->send([...]);
+    $emailit->emails()->send([...]);
 } catch (AuthenticationException $e) {
     // Invalid API key (401)
 } catch (InvalidRequestException $e) {

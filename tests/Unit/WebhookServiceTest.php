@@ -20,7 +20,7 @@ test('create() returns a Webhook resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(201, $body)]);
 
-    $webhook = $client->webhooks->create([
+    $webhook = $client->webhooks()->create([
         'name' => 'My Webhook',
         'url' => 'https://example.com/hook',
         'all_events' => true,
@@ -47,7 +47,7 @@ test('get() returns a Webhook resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $webhook = $client->webhooks->get('wh_123');
+    $webhook = $client->webhooks()->get('wh_123');
 
     expect($webhook)->toBeInstanceOf(Webhook::class)
         ->and($webhook->id)->toBe('wh_123');
@@ -67,7 +67,7 @@ test('update() returns a Webhook resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $webhook = $client->webhooks->update('wh_123', [
+    $webhook = $client->webhooks()->update('wh_123', [
         'name' => 'Updated Webhook',
         'url' => 'https://example.com/hook-v2',
     ]);
@@ -94,7 +94,7 @@ test('list() returns a Collection of webhooks', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->webhooks->list();
+    $collection = $client->webhooks()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -115,7 +115,7 @@ test('delete() returns a Webhook resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $webhook = $client->webhooks->delete('wh_123');
+    $webhook = $client->webhooks()->delete('wh_123');
 
     expect($webhook)->toBeInstanceOf(Webhook::class)
         ->and($webhook->deleted)->toBeTrue();

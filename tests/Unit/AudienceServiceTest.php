@@ -18,7 +18,7 @@ test('create() returns an Audience resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(201, $body)]);
 
-    $audience = $client->audiences->create(['name' => 'Newsletter']);
+    $audience = $client->audiences()->create(['name' => 'Newsletter']);
 
     expect($audience)->toBeInstanceOf(Audience::class)
         ->and($audience->id)->toBe('aud_123')
@@ -39,7 +39,7 @@ test('get() returns an Audience resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $audience = $client->audiences->get('aud_123');
+    $audience = $client->audiences()->get('aud_123');
 
     expect($audience)->toBeInstanceOf(Audience::class)
         ->and($audience->id)->toBe('aud_123');
@@ -58,7 +58,7 @@ test('update() returns an Audience resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $audience = $client->audiences->update('aud_123', ['name' => 'Updated Newsletter']);
+    $audience = $client->audiences()->update('aud_123', ['name' => 'Updated Newsletter']);
 
     expect($audience)->toBeInstanceOf(Audience::class)
         ->and($audience->name)->toBe('Updated Newsletter');
@@ -82,7 +82,7 @@ test('list() returns a Collection of audiences', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->audiences->list();
+    $collection = $client->audiences()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -103,7 +103,7 @@ test('delete() returns an Audience resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $audience = $client->audiences->delete('aud_123');
+    $audience = $client->audiences()->delete('aud_123');
 
     expect($audience)->toBeInstanceOf(Audience::class)
         ->and($audience->deleted)->toBeTrue();
@@ -116,5 +116,5 @@ test('audiences service throws InvalidRequestException on 404', function () {
         jsonResponse(404, ['error' => 'Not found']),
     ]);
 
-    $client->audiences->get('aud_nonexistent');
+    $client->audiences()->get('aud_nonexistent');
 })->throws(InvalidRequestException::class);

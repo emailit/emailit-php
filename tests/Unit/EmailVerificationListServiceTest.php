@@ -27,7 +27,7 @@ test('create() returns an EmailVerificationList resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(201, $body)]);
 
-    $list = $client->emailVerificationLists->create([
+    $list = $client->emailVerificationLists()->create([
         'name' => 'Marketing List Q1',
         'emails' => ['user1@example.com', 'user2@example.com', 'user3@example.com'],
     ]);
@@ -74,7 +74,7 @@ test('list() returns a Collection of verification lists', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->emailVerificationLists->list(['page' => 1, 'limit' => 10]);
+    $collection = $client->emailVerificationLists()->list(['page' => 1, 'limit' => 10]);
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -104,7 +104,7 @@ test('get() returns an EmailVerificationList resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $list = $client->emailVerificationLists->get('evl_abc123');
+    $list = $client->emailVerificationLists()->get('evl_abc123');
 
     expect($list)->toBeInstanceOf(EmailVerificationList::class)
         ->and($list->id)->toBe('evl_abc123')
@@ -145,7 +145,7 @@ test('results() returns a Collection of verification results', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $results = $client->emailVerificationLists->results('evl_abc123', ['page' => 1, 'limit' => 50]);
+    $results = $client->emailVerificationLists()->results('evl_abc123', ['page' => 1, 'limit' => 50]);
 
     expect($results)->toBeInstanceOf(Collection::class)
         ->and($results)->toHaveCount(2)
@@ -172,7 +172,7 @@ test('export() returns a raw ApiResponse with binary content', function () {
         ),
     ]);
 
-    $response = $client->emailVerificationLists->export('evl_abc123');
+    $response = $client->emailVerificationLists()->export('evl_abc123');
 
     expect($response)->toBeInstanceOf(ApiResponse::class)
         ->and($response->statusCode)->toBe(200)

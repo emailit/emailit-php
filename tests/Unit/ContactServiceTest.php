@@ -19,7 +19,7 @@ test('create() returns a Contact resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(201, $body)]);
 
-    $contact = $client->contacts->create([
+    $contact = $client->contacts()->create([
         'email' => 'user@example.com',
         'first_name' => 'John',
         'last_name' => 'Doe',
@@ -46,7 +46,7 @@ test('get() returns a Contact resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $contact = $client->contacts->get('con_123');
+    $contact = $client->contacts()->get('con_123');
 
     expect($contact)->toBeInstanceOf(Contact::class)
         ->and($contact->id)->toBe('con_123')
@@ -67,7 +67,7 @@ test('update() returns a Contact resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $contact = $client->contacts->update('con_123', ['first_name' => 'Jane']);
+    $contact = $client->contacts()->update('con_123', ['first_name' => 'Jane']);
 
     expect($contact)->toBeInstanceOf(Contact::class)
         ->and($contact->first_name)->toBe('Jane');
@@ -91,7 +91,7 @@ test('list() returns a Collection of contacts', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->contacts->list();
+    $collection = $client->contacts()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -112,7 +112,7 @@ test('delete() returns a Contact resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $contact = $client->contacts->delete('con_123');
+    $contact = $client->contacts()->delete('con_123');
 
     expect($contact)->toBeInstanceOf(Contact::class)
         ->and($contact->deleted)->toBeTrue();

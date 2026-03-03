@@ -20,7 +20,7 @@ test('create() returns a Domain resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(201, $body)]);
 
-    $domain = $client->domains->create(['name' => 'example.com', 'track_loads' => true]);
+    $domain = $client->domains()->create(['name' => 'example.com', 'track_loads' => true]);
 
     expect($domain)->toBeInstanceOf(Domain::class)
         ->and($domain->id)->toBe('sd_123')
@@ -43,7 +43,7 @@ test('get() returns a Domain resource', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $domain = $client->domains->get('sd_123');
+    $domain = $client->domains()->get('sd_123');
 
     expect($domain)->toBeInstanceOf(Domain::class)
         ->and($domain->id)->toBe('sd_123')
@@ -64,7 +64,7 @@ test('verify() returns a Domain resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $domain = $client->domains->verify('sd_123');
+    $domain = $client->domains()->verify('sd_123');
 
     expect($domain)->toBeInstanceOf(Domain::class)
         ->and($domain->verified_at)->toBe('2026-01-01T00:00:00Z');
@@ -88,7 +88,7 @@ test('update() sends PATCH and returns a Domain resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $domain = $client->domains->update('sd_123', ['track_clicks' => true]);
+    $domain = $client->domains()->update('sd_123', ['track_clicks' => true]);
 
     expect($domain)->toBeInstanceOf(Domain::class)
         ->and($domain->track_clicks)->toBeTrue();
@@ -113,7 +113,7 @@ test('list() returns a Collection of domains', function () {
 
     ['client' => $client] = mockClient([jsonResponse(200, $body)]);
 
-    $collection = $client->domains->list();
+    $collection = $client->domains()->list();
 
     expect($collection)->toBeInstanceOf(Collection::class)
         ->and($collection)->toHaveCount(2)
@@ -135,7 +135,7 @@ test('delete() returns a Domain resource', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $domain = $client->domains->delete('sd_123');
+    $domain = $client->domains()->delete('sd_123');
 
     expect($domain)->toBeInstanceOf(Domain::class)
         ->and($domain->deleted)->toBeTrue();
@@ -153,7 +153,7 @@ test('domains service throws AuthenticationException on 401', function () {
         jsonResponse(401, ['error' => 'Unauthenticated']),
     ]);
 
-    $client->domains->list();
+    $client->domains()->list();
 })->throws(AuthenticationException::class);
 
 test('domains service throws InvalidRequestException on 404', function () {
@@ -161,5 +161,5 @@ test('domains service throws InvalidRequestException on 404', function () {
         jsonResponse(404, ['error' => 'Not found']),
     ]);
 
-    $client->domains->get('sd_nonexistent');
+    $client->domains()->get('sd_nonexistent');
 })->throws(InvalidRequestException::class);

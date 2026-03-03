@@ -30,7 +30,7 @@ test('verify() returns an email verification result', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $result = $client->emailVerifications->verify([
+    $result = $client->emailVerifications()->verify([
         'email' => 'test@example.com',
     ]);
 
@@ -56,7 +56,7 @@ test('verify() with mode parameter', function () {
 
     ['client' => $client, 'handler' => $handler] = mockClient([jsonResponse(200, $body)]);
 
-    $result = $client->emailVerifications->verify([
+    $result = $client->emailVerifications()->verify([
         'email' => 'test@example.com',
         'mode' => 'quick',
     ]);
