@@ -12,7 +12,7 @@ class BaseEmailitClient
 {
     public const DEFAULT_API_BASE = 'https://api.emailit.com';
 
-    private const SDK_VERSION = '2.0.1';
+    private const SDK_VERSION = '2.0.2';
 
     private string $apiKey;
     private string $apiBase;

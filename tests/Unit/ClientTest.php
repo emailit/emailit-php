@@ -65,5 +65,5 @@ test('Emailit::client() returns EmailitClient', function () {
 });
 
 test('Emailit::VERSION is defined', function () {
-    expect(Emailit::VERSION)->toBe('2.0.1');
+    expect(Emailit::VERSION)->toBe('2.0.2');
 });
