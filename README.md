@@ -1,8 +1,8 @@
 # Emailit PHP
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/emailit/emailit-php/tests.yml?label=tests&style=for-the-badge&labelColor=111827)](https://github.com/emailit/emailit-php/actions)
-[![Packagist Version](https://img.shields.io/packagist/v/emailit/emailit-php?label=tests&style=for-the-badge&labelColor=111827)](https://packagist.org/packages/emailit/emailit-php)
-[![License](https://img.shields.io/github/license/emailit/emailit-php?label=tests&style=for-the-badge&labelColor=111827)](LICENSE)
+[![Packagist Version](https://img.shields.io/packagist/v/emailit/emailit-php?label=packagist&style=for-the-badge&labelColor=111827)](https://packagist.org/packages/emailit/emailit-php)
+[![License](https://img.shields.io/github/license/emailit/emailit-php?label=license&style=for-the-badge&labelColor=111827)](LICENSE)
 
 The official PHP SDK for the [Emailit](https://emailit.com) Email API.
 
