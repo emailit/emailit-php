@@ -420,6 +420,86 @@ echo $event->type;
 echo $event->data['email_id'];
 ```
 
+## Webhook Events
+
+The SDK provides typed event classes for all Emailit webhook event types under the `Emailit\Events` namespace, plus a `WebhookSignature` class for verifying webhook request signatures.
+
+### Verifying Webhook Signatures
+
+```php
+use Emailit\WebhookSignature;
+use Emailit\Events\EmailDelivered;
+use Emailit\Exceptions\ApiErrorException;
+
+$rawBody = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_EMAILIT_SIGNATURE'];
+$timestamp = $_SERVER['HTTP_X_EMAILIT_TIMESTAMP'];
+$secret = 'your_webhook_signing_secret';
+
+try {
+    $event = WebhookSignature::verify($rawBody, $signature, $timestamp, $secret);
+
+    // $event is automatically typed based on the event type
+    echo $event->type;     // e.g. "email.delivered"
+    echo $event->event_id; // e.g. "evt_abc123"
+
+    // Access the event data
+    $data = $event->getEventData();
+
+    if ($event instanceof EmailDelivered) {
+        // Handle delivered email
+    }
+} catch (ApiErrorException $e) {
+    http_response_code(401);
+    exit($e->getMessage());
+}
+```
+
+You can disable replay protection by passing `tolerance: null`, or set a custom tolerance in seconds:
+
+```php
+// Skip replay check
+$event = WebhookSignature::verify($rawBody, $signature, $timestamp, $secret, tolerance: null);
+
+// Custom 10-minute tolerance
+$event = WebhookSignature::verify($rawBody, $signature, $timestamp, $secret, tolerance: 600);
+```
+
+### Available Event Types
+
+**Emails:** `email.accepted`, `email.scheduled`, `email.delivered`, `email.bounced`, `email.attempted`, `email.failed`, `email.rejected`, `email.suppressed`, `email.received`, `email.complained`, `email.clicked`, `email.loaded`
+
+**Domains:** `domain.created`, `domain.updated`, `domain.deleted`
+
+**Audiences:** `audience.created`, `audience.updated`, `audience.deleted`
+
+**Subscribers:** `subscriber.created`, `subscriber.updated`, `subscriber.deleted`
+
+**Contacts:** `contact.created`, `contact.updated`, `contact.deleted`
+
+**Templates:** `template.created`, `template.updated`, `template.deleted`
+
+**Suppressions:** `suppression.created`, `suppression.updated`, `suppression.deleted`
+
+**Email Verifications:** `email_verification.created`, `email_verification.updated`, `email_verification.deleted`
+
+**Email Verification Lists:** `email_verification_list.created`, `email_verification_list.updated`, `email_verification_list.deleted`
+
+Each event type has a corresponding class under `Emailit\Events\` (e.g. `Emailit\Events\EmailDelivered`, `Emailit\Events\DomainCreated`). You can use `instanceof` checks or the `EVENT_TYPE` constant for routing:
+
+```php
+use Emailit\Events\EmailDelivered;
+use Emailit\Events\EmailBounced;
+use Emailit\Events\ContactCreated;
+
+match (true) {
+    $event instanceof EmailDelivered  => handleDelivered($event),
+    $event instanceof EmailBounced    => handleBounce($event),
+    $event instanceof ContactCreated  => handleNewContact($event),
+    default                           => log("Unhandled: {$event->type}"),
+};
+```
+
 ## Error Handling
 
 The SDK throws typed exceptions for API errors:
