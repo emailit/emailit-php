@@ -6,7 +6,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 
-pest()->afterEach(function () {
+afterEach(function () {
     Mockery::close();
 });
 
