@@ -93,9 +93,17 @@ test('factory passes json body through', function () {
 });
 
 test('all exception subclasses extend ApiErrorException', function () {
-    expect(AuthenticationException::class)->toExtend(ApiErrorException::class)
-        ->and(InvalidRequestException::class)->toExtend(ApiErrorException::class)
-        ->and(RateLimitException::class)->toExtend(ApiErrorException::class)
-        ->and(UnprocessableEntityException::class)->toExtend(ApiErrorException::class)
-        ->and(ApiConnectionException::class)->toExtend(ApiErrorException::class);
+    $subclasses = [
+        AuthenticationException::class,
+        InvalidRequestException::class,
+        RateLimitException::class,
+        UnprocessableEntityException::class,
+        ApiConnectionException::class,
+    ];
+
+    foreach ($subclasses as $class) {
+        expect(is_subclass_of($class, ApiErrorException::class))->toBeTrue(
+            "{$class} should extend " . ApiErrorException::class,
+        );
+    }
 });
