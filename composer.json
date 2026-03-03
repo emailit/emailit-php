@@ -1,0 +1,42 @@
+{
+    "name": "emailit/emailit-php",
+    "description": "PHP SDK for the Emailit Email API",
+    "keywords": ["emailit", "email", "api", "sdk"],
+    "homepage": "https://emailit.com",
+    "authors": [
+        {
+            "name": "Emailit",
+            "email": "support@emailit.com",
+            "homepage": "https://emailit.com"
+        }
+    ],
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": "^8.1",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.6",
+        "pestphp/pest": "^2.0|^3.0|^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Emailit\\": "src/"
+        },
+        "files": [
+            "src/Emailit.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Emailit\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
